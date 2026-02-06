@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sign Up - NutriQuest</title>
+
+    <!-- Dark Mode Script -->
+    <script src="js/dark-mode.js"></script>
+
+    <!-- Performance: Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <!-- Optimized: Only load needed font weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Material Icons - Standard working CDN -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <!-- Faster: Removed heavy plugins -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec1a",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102211",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a331b",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CRITICAL FIX: Ensure all buttons/links are clickable -->
+    <style>
+        a,
+        button,
+        [role="button"],
+        [onclick] {
+            cursor: pointer !important;
+            pointer-events: auto !important;
+        }
+
+        .material-symbols-outlined {
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+
+<body
+    class="font-display text-[#111811] min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-100 via-cyan-50 to-teal-100 dark:from-slate-900 dark:via-teal-950 dark:to-slate-900">
+
+    <div class="w-full max-w-md">
+        <!-- Logo Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 mb-4">
+                <span class="material-symbols-outlined text-5xl text-primary">eco</span>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">NutriQuest</h1>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300">Start your nutrition journey today!</p>
+        </div>
+
+        <!-- Signup Card - Always white for contrast -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-900">Create Account</h2>
+
+            <form id="signupForm" class="space-y-5">
+                <!-- Name -->
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="name">
+                        Full Name
+                    </label>
+                    <input
+                        class="w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
+                        id="name" type="text" placeholder="John Doe" required />
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="email">
+                        Email Address
+                    </label>
+                    <input
+                        class="w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
+                        id="email" type="email" placeholder="your.email@example.com" required />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input
+                        class="w-full h-12 px-4 rounded-lg bg-gray-50 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-gray-900"
+                        id="password" type="password" placeholder="••••••••" required />
+                    <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters</p>
+                </div>
+
+                <!-- Terms -->
+                <label class="flex items-start gap-2 cursor-pointer text-sm">
+                    <input type="checkbox"
+                        class="w-4 h-4 mt-0.5 rounded border-gray-300 text-primary focus:ring-primary" required>
+                    <span class="text-gray-600">
+                        I agree to the <a href="#" class="text-primary hover:underline">Terms of Service</a> and
+                        <a href="#" class="text-primary hover:underline">Privacy Policy</a>
+                    </span>
+                </label>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full h-12 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg shadow-lg shadow-primary/20 transition-all hover:shadow-xl hover:-translate-y-0.5">
+                    Create Account
+                </button>
+
+                <!-- Divider -->
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-gray-500">Or sign up with</span>
+                    </div>
+                </div>
+
+                <!-- Social Signup -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button"
+                        class="h-11 flex items-center justify-center gap-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all text-gray-700">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"
+                                fill="#4285F4" />
+                            <path
+                                d="M9.003 18c2.43 0 4.467-.806 5.956-2.184L12.05 13.56c-.806.54-1.836.86-3.047.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9.003 18z"
+                                fill="#34A853" />
+                            <path
+                                d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.426 0 9.003 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29c.708-2.127 2.692-3.71 5.036-3.71z"
+                                fill="#EA4335" />
+                        </svg>
+                        <span class="font-medium text-sm">Google</span>
+                    </button>
+                    <button type="button"
+                        class="h-11 flex items-center justify-center gap-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all text-gray-700">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.475 9.285c-.018-1.92 1.567-2.844 1.638-2.893-.894-1.308-2.285-1.488-2.778-1.506-1.182-.12-2.307.696-2.907.696-.599 0-1.527-.678-2.51-.66-1.29.019-2.48.75-3.144 1.906-1.34 2.325-.343 5.769.963 7.654.637.923 1.398 1.96 2.396 1.923.96-.038 1.322-.621 2.482-.621 1.16 0 1.485.621 2.491.602 1.028-.019 1.701-.942 2.338-1.865.736-1.069 1.04-2.106 1.058-2.16-.023-.01-2.028-.778-2.047-3.076zM12.36 3.453c.53-.642.887-1.534.79-2.423-.763.031-1.687.508-2.235 1.15-.491.569-.92 1.478-.806 2.35.852.066 1.722-.433 2.25-1.077z" />
+                        </svg>
+                        <span class="font-medium text-sm">Apple</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Login Link -->
+            <p class="text-center text-sm text-gray-600 mt-6">
+                Already have an account?
+                <a href="login.html" class="text-primary font-bold hover:underline">Log In</a>
+            </p>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-6">
+            <a href="welcome.html"
+                class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
+                ← Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Universal button handler -->
+    <script src="js/universal-handler.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (name && email && password) {
+                // Store user info (demo mode)
+                localStorage.setItem('userName', name);
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Show success message
+                alert('🎉 Account created successfully! Redirecting to setup...');
+
+                // Redirect to welcome wizard (or dashboard)
+                setTimeout(() => {
+                    window.location.href = 'welcome.html';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+
+</html>

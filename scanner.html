@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Scanner - NutriQuest</title>
+
+    <!-- Dark Mode Script -->
+    <script src="js/dark-mode.js"></script>
+
+    <!-- Performance: Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <!-- Optimized: Only load needed font weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <!-- Optimized: Lighter Material Icons -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <!-- Faster: Removed heavy plugins -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec1a",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102211",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a331b",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- CRITICAL FIX: Ensure all buttons/links are clickable -->
+    <style>
+        a,
+        button,
+        [role="button"],
+        [onclick] {
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        a:hover,
+        button:hover {
+            opacity: 0.9;
+        }
+
+        body * {
+            pointer-events: auto;
+        }
+
+        .material-symbols-outlined,
+        span.material-symbols-outlined {
+            pointer-events: none !important;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111811] dark:text-white">
+    <!-- Header -->
+    <header
+        class="flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-6 lg:px-10 py-4 bg-surface-light dark:bg-surface-dark sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="size-8 text-primary">
+                <span class="material-symbols-outlined text-4xl">eco</span>
+            </div>
+            <h2 class="text-xl font-bold">NutriQuest</h2>
+        </div>
+        <div class="hidden md:flex gap-8">
+            <nav class="flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="insights.html">Insights</a>
+                <a class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5"
+                    href="scanner.html">Scanner</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors"
+                    href="achievements.html">Achievements</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <button
+                class="flex items-center gap-2 text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+                <span>12 Day Streak</span>
+            </button>
+            <a href="profile.html"
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/30"
+                style='background-image: url("https://avatar.iran.liara.run/public");'></a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-[1200px] mx-auto px-6 lg:px-12 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl font-bold tracking-tight mb-2">Food Scanner 📸</h1>
+            <p class="text-gray-600 dark:text-gray-300">Point your camera at food for instant nutrition analysis</p>
+        </div>
+
+        <!-- Scanner Card -->
+        <div
+            class="bg-surface-light dark:bg-surface-dark rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-white/5 mb-6">
+            <!-- Camera Container -->
+            <div class="relative w-full max-w-2xl mx-auto aspect-[4/3] bg-gray-900 rounded-2xl overflow-hidden mb-6">
+                <video id="cameraFeed" class="w-full h-full object-cover" autoplay></video>
+
+                <!-- Scan Frame Overlay -->
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div class="w-3/4 h-3/4 border-4 border-primary rounded-2xl shadow-[0_0_0_9999px_rgba(0,0,0,0.5)]">
+                    </div>
+                </div>
+
+                <!-- Hint Text -->
+                <div
+                    class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/75 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium">
+                    Position food within the frame
+                </div>
+
+                <!-- AI Badge -->
+                <div
+                    class="absolute top-6 left-6 bg-primary/90 backdrop-blur-md text-black px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                    AI Ready
+                </div>
+            </div>
+
+            <!-- Camera Controls -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <button id="captureBtn"
+                    class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg shadow-primary/20 transition-all">
+                    <span class="material-symbols-outlined text-2xl">photo_camera</span>
+                    Capture & Analyze
+                </button>
+
+                <button
+                    class="flex items-center gap-2 bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 px-6 py-4 rounded-full font-bold transition-all">
+                    <span class="material-symbols-outlined">image</span>
+                    Upload Image
+                </button>
+
+                <button
+                    class="flex items-center gap-2 bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 px-6 py-4 rounded-full font-bold transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                    Cancel
+                </button>
+            </div>
+        </div>
+
+        <!-- Nutrition Results (Hidden by default, shown after scan) -->
+        <div id="scanResults"
+            class="hidden bg-surface-light dark:bg-surface-dark rounded-2xl p-8 shadow-lg border-2 border-primary">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Scan Results</h3>
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold">95% Confidence</span>
+            </div>
+
+            <!-- Scanned Image -->
+            <div class="mb-6">
+                <img id="scanned Image"
+                    class="w-full max-w-md mx-auto rounded-xl border-2 border-gray-200 dark:border-gray-700"
+                    alt="Scanned food" />
+            </div>
+
+            <!-- Detected Food -->
+            <div class="mb-6">
+                <h4 class="font-bold text-xl mb-4">Detected: Grilled Chicken Salad</h4>
+
+                <!-- Portion Selector -->
+                <div class="flex items-center gap-4 mb-6">
+                    <label class="font-semibold">Portion Size:</label>
+                    <select
+                        class="form-select rounded-lg border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-background-dark px-4 py-2 font-medium">
+                        <option>1 serving (standard)</option>
+                        <option>0.5 serving (half)</option>
+                        <option>1.5 servings</option>
+                        <option>2 servings (double)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Nutrition Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gray-50 dark:bg-white/5 rounded-xl p-6 text-center">
+                    <span class="material-symbols-outlined text-3xl text-primary mb-2">local_fire_department</span>
+                    <p class="text-3xl font-black mb-1">450</p>
+                    <p class="text-xs text-gray-500 font-semibold uppercase">Calories</p>
+                </div>
+
+                <div
+                    class="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 text-center border border-green-200 dark:border-green-800/30">
+                    <span
+                        class="material-symbols-outlined text-3xl text-green-600 dark:text-green-400 mb-2">fitness_center</span>
+                    <p class="text-3xl font-black mb-1">35g</p>
+                    <p class="text-xs text-gray-500 font-semibold uppercase">Protein</p>
+                </div>
+
+                <div
+                    class="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-6 text-center border border-orange-200 dark:border-orange-800/30">
+                    <span
+                        class="material-symbols-outlined text-3xl text-orange-600 dark:text-orange-400 mb-2">grain</span>
+                    <p class="text-3xl font-black mb-1">28g</p>
+                    <p class="text-xs text-gray-500 font-semibold uppercase">Carbs</p>
+                </div>
+
+                <div
+                    class="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-6 text-center border border-yellow-200 dark:border-yellow-800/30">
+                    <span
+                        class="material-symbols-outlined text-3xl text-yellow-600 dark:text-yellow-400 mb-2">water_drop</span>
+                    <p class="text-3xl font-black mb-1">18g</p>
+                    <p class="text-xs text-gray-500 font-semibold uppercase">Fats</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4">
+                <button
+                    class="flex-1 bg-primary hover:bg-primary/90 text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 transition-all">
+                    Save to Diary
+                </button>
+                <button
+                    class="flex-1 bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 py-4 rounded-xl font-bold transition-all">
+                    Scan Another
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Tips -->
+        <div class="mt-8 bg-primary/5 dark:bg-primary/10 rounded-2xl p-6 border border-primary/20">
+            <div class="flex items-start gap-4">
+                <span class="material-symbols-outlined text-primary text-3xl">lightbulb</span>
+                <div>
+                    <h4 class="font-bold text-lg mb-2">Tips for Best Results</h4>
+                    <ul class="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Ensure good lighting for accurate detection</li>
+                        <li>• Include the entire meal in frame</li>
+                        <li>• Hold camera steady when capturing</li>
+                        <li>• For mixed dishes, scan each component separately for higher accuracy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Universal button handler - Makes ALL buttons work -->
+    <script src="js/universal-handler.js"></script>
+    <script src="js/camera.js"></script>
+</body>
+
+</html>
