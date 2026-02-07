@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Community & Competition - NutriQuest</title>
+
+    <script src="js/dark-mode.js"></script>
+
+    <!-- Performance: Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <!-- Optimized: Only load needed font weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec1a",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102211",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a331b",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Tab Transitions */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- Firebase SDK (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config & Init -->
+    <script src="js/config.js"></script>
+    <script src="js/firebase-init.js"></script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111811] dark:text-white">
+    <!-- Header -->
+    <header
+        class="flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-6 lg:px-10 py-4 bg-surface-light dark:bg-surface-dark sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="size-8 text-primary">
+                <span class="material-symbols-outlined text-4xl">eco</span>
+            </div>
+            <h2 class="text-xl font-bold">NutriQuest</h2>
+        </div>
+        <div class="hidden md:flex gap-8">
+            <nav class="flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="dashboard.html">Dashboard</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="insights.html">Insights</a>
+                <a class="text-primary text-sm font-bold border-b-2 border-primary pb-0.5"
+                    href="community.html">Community</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="scanner.html">Scanner</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors"
+                    href="achievements.html">Achievements</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <button
+                class="flex items-center gap-2 text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+                <span id="headerStreak">0 Day Streak</span>
+            </button>
+            <a href="profile.html"
+                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/30"
+                style='background-image: url("https://avatar.iran.liara.run/public");'></a>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-6 lg:px-12 py-8">
+        <!-- Hero -->
+        <div class="mb-8 text-center sm:text-left">
+            <h1 class="text-4xl font-bold tracking-tight mb-2">Community Battleground ⚔️</h1>
+            <p class="text-gray-600 dark:text-gray-300">Compete with friends, join teams, and dominate the global
+                leaderboard!</p>
+        </div>
+
+        <!-- Weekly Challenge Banner -->
+        <div
+            class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-6 text-white mb-8 shadow-lg relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-32 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2">
+            </div>
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full text-xs font-bold mb-2">
+                        <span class="material-symbols-outlined text-sm">timer</span> WEEKLY CHALLENGE
+                    </div>
+                    <h2 class="text-3xl font-black mb-1">THE GREEN MACHINE</h2>
+                    <p class="opacity-90 max-w-lg">Scan 5 different vegetables this week to unlock the exclusive
+                        "Emerald Badge" + 500 PTS!</p>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div class="text-4xl font-black">2/5</div>
+                    <div class="w-48 h-3 bg-black/30 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary w-[40%]"></div>
+                    </div>
+                </div>
+                <button
+                    class="bg-white text-purple-700 px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-md">
+                    View Details
+                </button>
+            </div>
+        </div>
+
+        <!-- Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Sidebar: User Stats & Team -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <!-- My Rank Card -->
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl">
+                            🦁
+                        </div>
+                        <div>
+                            <h3 id="myDisplayName" class="font-bold text-lg">Loading...</h3>
+                            <p class="text-sm text-gray-500">Level 5 Contender</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl">
+                            <div class="text-xs text-gray-500 uppercase font-bold">Rank</div>
+                            <div id="myRank" class="text-xl font-black text-primary">#--</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl">
+                            <div class="text-xs text-gray-500 uppercase font-bold">XP</div>
+                            <div id="myPoints" class="text-xl font-black">--</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-white/5 p-3 rounded-xl">
+                            <div class="text-xs text-gray-500 uppercase font-bold">Win Rate</div>
+                            <div class="text-xl font-black">68%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Team Card -->
+                <div id="myTeamCard"
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm min-h-[200px] flex flex-col justify-center items-center text-center">
+                    <div class="animate-pulse">Loading Team Data...</div>
+                </div>
+
+                <!-- Friends Quick Add provided by community.js -->
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm">
+                    <h3 class="font-bold mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary">person_add</span> Add Rivals
+                    </h3>
+                    <div class="flex gap-2">
+                        <input id="friendEmailInput" type="email" placeholder="friend@email.com"
+                            class="flex-1 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm">
+                        <button onclick="addFriend()" class="bg-primary text-white p-2 rounded-lg hover:bg-primary/90">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content: Leaderboards -->
+            <div class="lg:col-span-8">
+                <!-- Tabs -->
+                <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+                    <button onclick="switchTab('global')" id="tab-global"
+                        class="tab-btn active px-6 py-2.5 rounded-full font-bold text-sm bg-primary text-white shadow-lg shadow-primary/20 transition-all">
+                        🌍 Global Top 50
+                    </button>
+                    <button onclick="switchTab('friends')" id="tab-friends"
+                        class="tab-btn px-6 py-2.5 rounded-full font-bold text-sm bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-all">
+                        👥 Friends
+                    </button>
+                    <button onclick="switchTab('teams')" id="tab-teams"
+                        class="tab-btn px-6 py-2.5 rounded-full font-bold text-sm bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-all">
+                        🛡️ Team Wars
+                    </button>
+                </div>
+
+                <!-- Global Tab -->
+                <div id="content-global" class="tab-content active">
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-white/5 overflow-hidden">
+                        <div
+                            class="p-4 border-b border-gray-100 dark:border-white/5 flex text-xs font-bold text-gray-500 uppercase tracking-wider">
+                            <div class="w-16 text-center">Rank</div>
+                            <div class="flex-1">Player</div>
+                            <div class="w-24 text-center">Streak</div>
+                            <div class="w-24 text-right pr-4">XP</div>
+                        </div>
+                        <div id="globalLeaderboardList" class="divide-y divide-gray-100 dark:divide-white/5">
+                            <!-- Items Injected Here -->
+                            <div class="p-8 text-center text-gray-500">Loading Global Ranks...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friends Tab -->
+                <div id="content-friends" class="tab-content">
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-white/5 overflow-hidden">
+                        <div
+                            class="p-4 border-b border-gray-100 dark:border-white/5 flex text-xs font-bold text-gray-500 uppercase tracking-wider">
+                            <div class="w-16 text-center">Rank</div>
+                            <div class="flex-1">Friend</div>
+                            <div class="w-24 text-center">Streak</div>
+                            <div class="w-24 text-right pr-4">XP</div>
+                        </div>
+                        <div id="friendsLeaderboardList" class="divide-y divide-gray-100 dark:divide-white/5">
+                            <!-- Items Injected Here -->
+                            <div class="p-8 text-center text-gray-500">Add friends to compete!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teams Tab -->
+                <div id="content-teams" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="teamBattleList">
+                        <!-- Loaded via JS -->
+                        <div class="col-span-2 p-8 text-center text-gray-500">Loading Team Wars...</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Team Modal -->
+    <div id="createTeamModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center">
+        <div class="bg-surface-light dark:bg-surface-dark p-8 rounded-2xl max-w-md w-full m-4 shadow-2xl">
+            <h3 class="text-2xl font-bold mb-4">Create a Squad</h3>
+            <p class="text-gray-500 mb-6 text-sm">Gather your friends and fight for the top spot!</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2">Team Name</label>
+                    <input id="newTeamName" type="text" placeholder="e.g. The Protein Warriors"
+                        class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-2">Team Tag (3-5 chars)</label>
+                    <input id="newTeamTag" type="text" placeholder="WARS" maxlength="5"
+                        class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 uppercase">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="closeTeamModal()"
+                        class="flex-1 py-3 rounded-xl font-bold hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Cancel</button>
+                    <button onclick="confirmCreateTeam()"
+                        class="flex-1 py-3 rounded-xl font-bold bg-primary text-white hover:bg-primary/90 transition-colors">Create
+                        Team</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Universal button handler -->
+    <script src="js/universal-handler.js"></script>
+    <script src="js/community.js"></script>
+</body>
+
+</html>
