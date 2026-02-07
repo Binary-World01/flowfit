@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Welcome to NutriQuest</title>
+
+    <!-- Dark Mode Script - Loads FIRST to prevent flash -->
+    <script src="js/dark-mode.js"></script>
+
+    <!-- Performance: Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+
+    <!-- Optimized: Only load needed font weights -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <!-- Faster: Removed heavy plugins -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec1a",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#102211",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a331b",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- Firebase SDK (v9 compat for existing code compatibility) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+    <!-- Firebase Config & Init -->
+    <script src="js/config.js"></script>
+    <script src="js/firebase-init.js"></script>
+
+    <!-- CRITICAL FIX: Ensure all buttons/links are clickable -->
+    <style>
+        a,
+        button,
+        [role="button"],
+        [onclick] {
+            cursor: pointer !important;
+            pointer-events: auto !important;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        a:hover,
+        button:hover {
+            opacity: 0.9;
+        }
+
+        body * {
+            pointer-events: auto;
+        }
+
+        .material-symbols-outlined,
+        span.material-symbols-outlined {
+            pointer-events: none !important;
+        }
+
+        /* Floating animation for badge */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111811] dark:text-white min-h-screen flex flex-col">
+    <!-- Top Navigation -->
+    <nav
+        class="w-full bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-white/10 px-4 py-3 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined text-3xl">eco</span>
+                </div>
+                <h2 class="text-xl font-bold tracking-tight">NutriQuest</h2>
+                <span
+                    class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary ml-2">
+                    <span class="material-symbols-outlined text-[14px] mr-1">auto_awesome</span>
+                    AI Powered
+                </span>
+            </div>
+            <div class="flex gap-3">
+                <button id="loginBtn"
+                    class="hidden sm:flex h-10 px-6 items-center justify-center rounded-full text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+                    Log In
+                </button>
+                <button id="signupBtn"
+                    class="flex h-10 px-6 items-center justify-center rounded-full bg-primary hover:bg-primary/90 text-white text-sm font-bold shadow-lg shadow-primary/20 transition-all">
+                    Sign Up
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content  -->
+    <main class="flex-grow flex items-center justify-center p-4 lg:p-8">
+        <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Column: Hero -->
+            <div class="flex flex-col gap-8 order-2 lg:order-1">
+                <div class="space-y-6">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight">
+                        Track Nutrition with the <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-600">Power of
+                            AI</span>
+                    </h1>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-lg leading-relaxed">
+                        Level up your health game. Scan your food instantly, track macros with precision, and complete
+                        daily quests to unlock a better you.
+                    </p>
+                </div>
+
+                <!-- Hero Image Card with Magnifying Glass Effect -->
+                <div id="imageCard" class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl group">
+                    <!-- Beautiful gradient background -->
+                    <div
+                        class="absolute inset-0 w-full h-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400">
+                    </div>
+
+                    <!-- Food Visual Representation -->
+                    <div class="absolute inset-0 flex items-center justify-center text-9xl opacity-30">
+                        🥗
+                    </div>
+
+                    <!-- Optional: Real image if available -->
+                    <img id="heroImage" src="images/acai-bowl.jpg" alt="Acai Bowl"
+                        class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'" />
+
+                    <!-- Magnifying Glass Lens -->
+                    <div id="magnifier" class="absolute w-40 h-40 rounded-full pointer-events-none z-50"
+                        style="display: none; border: 4px solid white; box-shadow: 0 8px 32px rgba(0,0,0,0.3); background-size: 400% 400%; background-repeat: no-repeat;">
+                    </div>
+
+
+                    <!-- Dark overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 flex items-end p-6">
+                        <div
+                            class="flex items-center gap-3 text-white transform transition-transform duration-500 group-hover:translate-x-2">
+                            <span class="material-symbols-outlined text-3xl">photo_camera</span>
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-wider opacity-80">AI Analysis</p>
+                                <p class="text-lg font-bold">Scanning: Delicious Meal...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nutrition Badge -->
+                    <div class="absolute top-6 right-6 z-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md p-3 rounded-lg shadow-lg flex items-center gap-3 transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl"
+                        style="animation: float 3s ease-in-out infinite;">
+                        <span class="material-symbols-outlined text-green-500">check_circle</span>
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase">Protein</p>
+                            <p class="text-sm font-bold">28g Detected</p>
+                        </div>
+                    </div>
+
+                    <!-- Hover hint -->
+                    <div
+                        class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div
+                            class="bg-white/10 backdrop-blur-md text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">search</span>
+                            Move cursor for magnifying glass
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <div class="flex -space-x-2">
+                        <div
+                            class="inline-block size-8 rounded-full ring-2 ring-white dark:ring-background-dark bg-gradient-to-br from-purple-400 to-pink-400">
+                        </div>
+                        <div
+                            class="inline-block size-8 rounded-full ring-2 ring-white dark:ring-background-dark bg-gradient-to-br from-blue-400 to-cyan-400">
+                        </div>
+                        <div
+                            class="inline-block size-8 rounded-full ring-2 ring-white dark:ring-background-dark bg-gradient-to-br from-green-400 to-emerald-400">
+                        </div>
+                    </div>
+                    <p>Join 10,000+ questers today.</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Wizard Card -->
+            <div class="order-1 lg:order-2 w-full flex justify-center lg:justify-end">
+                <div
+                    class="w-full max-w-[520px] bg-surface-light dark:bg-surface-dark rounded-2xl shadow-xl border border-gray-200 dark:border-white/5 overflow-hidden">
+                    <!-- Wizard Header -->
+                    <div class="px-8 pt-8 pb-4">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold">Quick Setup</h3>
+                            <span class="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">Step 1
+                                of 2</span>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="h-1.5 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary w-1/2 rounded-full"></div>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Body -->
+                    <div class="px-8 pb-8 flex flex-col gap-8">
+                        <!-- Section 1: Name Input -->
+                        <div class="flex flex-col gap-3">
+                            <label class="text-base font-bold flex items-center gap-2" for="fname">
+                                <span class="material-symbols-outlined text-primary">waving_hand</span>
+                                Let's get introduced
+                            </label>
+                            <input
+                                class="w-full h-14 px-5 rounded-lg bg-gray-50 dark:bg-background-dark border border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary placeholder:text-gray-400 transition-all"
+                                id="fname" placeholder="What should we call you, champion?" type="text" />
+                        </div>
+
+                        <!-- Section 2: Goal Selection -->
+                        <div class="flex flex-col gap-3">
+                            <label class="text-base font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">emoji_events</span>
+                                Choose your Main Quest
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <!-- Option 1 (Default Selected) -->
+                                <button data-goal="lose" type="button" onclick="selectGoal(this)"
+                                    class="goal-button goal-selected group relative flex flex-col items-center justify-center gap-3 p-4 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/20 text-center transition-all">
+                                    <div class="absolute top-2 right-2 text-primary">
+                                        <span class="material-symbols-outlined text-lg goal-check">check_circle</span>
+                                    </div>
+                                    <div
+                                        class="size-12 rounded-full bg-white dark:bg-surface-dark flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined text-2xl">monitor_weight</span>
+                                    </div>
+                                    <span class="text-sm font-bold text-primary">Lose<br />Weight</span>
+                                </button>
+
+                                <!-- Option 2 - Build Muscle -->
+                                <button data-goal="muscle" type="button" onclick="selectGoal(this)"
+                                    class="goal-button cursor-pointer group relative flex flex-col items-center justify-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 text-center transition-all">
+                                    <div
+                                        class="size-12 rounded-full bg-gray-100 dark:bg-background-dark flex items-center justify-center text-gray-500 dark:text-gray-300 group-hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-2xl">fitness_center</span>
+                                    </div>
+                                    <span
+                                        class="text-sm font-bold text-gray-700 dark:text-gray-200 group-hover:text-primary">Build<br />Muscle</span>
+                                </button>
+
+                                <!-- Option 3 - Stay Healthy -->
+                                <button data-goal="healthy" type="button" onclick="selectGoal(this)"
+                                    class="goal-button cursor-pointer group relative flex flex-col items-center justify-center gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 text-center transition-all">
+                                    <div
+                                        class="size-12 rounded-full bg-gray-100 dark:bg-background-dark flex items-center justify-center text-gray-500 dark:text-gray-300 group-hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined text-2xl">health_and_safety</span>
+                                    </div>
+                                    <span
+                                        class="text-sm font-bold text-gray-700 dark:text-gray-200 group-hover:text-primary">Stay<br />Healthy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CTA -->
+                        <a href="onboarding.html" id="startJourneyBtn"
+                            class="w-full h-14 mt-2 flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white text-base font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:-translate-y-0.5 transition-all">
+                            Start Your Journey
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+
+                        <p class="text-center text-xs text-gray-400 dark:text-gray-500">
+                            By continuing, you agree to our Terms of Service & Privacy Policy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Universal button handler - Makes ALL buttons work -->
+    <script src="js/universal-handler.js"></script>
+    <script>
+        // Goal Selection Function - Called via onclick
+        function selectGoal(button) {
+            console.log('🎯 Goal clicked:', button.dataset.goal);
+
+            // Remove selected state from all buttons
+            const allGoalButtons = document.querySelectorAll('.goal-button');
+            allGoalButtons.forEach(btn => {
+                btn.classList.remove('goal-selected', 'border-2', 'border-primary', 'bg-primary/5', 'dark:bg-primary/20');
+                btn.classList.add('border', 'border-gray-200', 'dark:border-gray-700');
+                const checkContainer = btn.querySelector('.goal-check')?.parentElement;
+                if (checkContainer) checkContainer.remove();
+            });
+
+            // Add selected state to clicked button
+            button.classList.add('goal-selected', 'border-2', 'border-primary', 'bg-primary/5', 'dark:bg-primary/20');
+            button.classList.remove('border', 'border-gray-200', 'dark:border-gray-700');
+
+            // Add check icon
+            if (!button.querySelector('.goal-check')) {
+                const checkDiv = document.createElement('div');
+                checkDiv.className = 'absolute top-2 right-2 text-primary';
+                checkDiv.innerHTML = '<span class="material-symbols-outlined text-lg goal-check">check_circle</span>';
+                button.insertBefore(checkDiv, button.firstChild);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('selectedGoal', button.dataset.goal);
+            console.log('✅ Saved:', button.dataset.goal);
+        }
+        // Simple redirect after form submission
+        document.querySelector('a[href="dashboard.html"]').addEventListener('click', function (e) {
+            const name = document.getElementById('fname').value;
+            if (name) {
+                localStorage.setItem('userName', name);
+            }
+        });
+
+        // Magnifying Glass Effect
+        const imageCard = document.getElementById('imageCard');
+        const magnifier = document.getElementById('magnifier');
+        const heroImage = document.getElementById('heroImage');
+
+        console.log('🔍 Magnifier elements:', { imageCard, magnifier, heroImage });
+
+        if (imageCard && magnifier) {
+            imageCard.addEventListener('mouseenter', function () {
+                console.log('🖱️ Mouse entered image card');
+                magnifier.style.display = 'block';
+                console.log('✅ Magnifier display set to block');
+            });
+
+            imageCard.addEventListener('mouseleave', function () {
+                console.log('🖱️ Mouse left image card');
+                magnifier.style.display = 'none';
+            });
+
+            imageCard.addEventListener('mousemove', function (e) {
+                const rect = imageCard.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Position the magnifier lens to follow cursor
+                const lensSize = 160; // w-40 = 160px
+                magnifier.style.left = (x - lensSize / 2) + 'px';
+                magnifier.style.top = (y - lensSize / 2) + 'px';
+
+                console.log('🖱️ Cursor at:', x, y, '| Magnifier at:', magnifier.style.left, magnifier.style.top);
+
+                // Calculate background position for ONLY the area under cursor
+                // The formula: -(cursorPos * zoomFactor - lensSize/2)
+                const zoom = 4; // 400% zoom
+                const bgX = -(x * zoom - lensSize / 2);
+                const bgY = -(y * zoom - lensSize / 2);
+
+                // Set background image
+                if (heroImage && heroImage.style.display !== 'none' && heroImage.complete) {
+                    magnifier.style.backgroundImage = `url(${heroImage.src})`;
+                    // Set background size to 400% of original
+                    magnifier.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+                } else {
+                    // Fallback gradient
+                    magnifier.style.backgroundImage = 'linear-gradient(to bottom right, rgb(168, 85, 247), rgb(236, 72, 153), rgb(251, 146, 60))';
+                    magnifier.style.backgroundSize = `${rect.width * zoom}px ${rect.height * zoom}px`;
+                }
+
+                // Position background to show only the area under cursor
+                magnifier.style.backgroundPosition = `${bgX}px ${bgY}px`;
+            });
+        }
+
+        // Save name and goal when clicking Start Journey
+        const startBtn = document.getElementById('startJourneyBtn');
+        if (startBtn) {
+            startBtn.addEventListener('click', function (e) {
+                const name = document.getElementById('fname').value;
+                if (name) {
+                    localStorage.setItem('userName', name);
+                }
+                // Get the selected goal from the selectGoal function's saved value
+                const savedGoal = localStorage.getItem('selectedGoal') || 'lose';
+                console.log('🚀 Redirecting to onboarding with:', { name, goal: savedGoal });
+            });
+        }
+    </script>
+</body>
+
+</html>
