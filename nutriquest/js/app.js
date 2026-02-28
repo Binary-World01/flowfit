@@ -122,13 +122,13 @@ async function loadDashboardData() {
                     foodName: 'Oatmeal & Berries',
                     timestamp: new Date().setHours(8, 30),
                     calories: 350, protein: 12, carbs: 60, fats: 6,
-                    totals: { calories: 350, protein: 12, carbs: 60, fats: 6 }
+                    totals: { calories: 350, protein: 12, carbs: 60, fats: 6, sodium: 150, sugar: 18 }
                 },
                 {
                     foodName: 'Grilled Chicken Salad',
                     timestamp: new Date().setHours(13, 15),
                     calories: 450, protein: 45, carbs: 15, fats: 20,
-                    totals: { calories: 450, protein: 45, carbs: 15, fats: 20 }
+                    totals: { calories: 450, protein: 45, carbs: 15, fats: 20, sodium: 850, sugar: 5 }
                 }
             ];
             meals = demoMeans;
@@ -146,7 +146,9 @@ async function loadDashboardData() {
             protein: 0,
             carbs: 0,
             fats: 0,
-            fiber: 0
+            fiber: 0,
+            sodium: 0,
+            sugar: 0
         };
 
         meals.forEach(meal => {
@@ -156,6 +158,8 @@ async function loadDashboardData() {
             totals.carbs += m.carbs || m.carbohydrates || 0; // consistent access
             totals.fats += m.fats || m.fat || m.totalFat || 0; // varied naming handling
             totals.fiber += m.fiber || 0;
+            totals.sodium += m.sodium || 0;
+            totals.sugar += m.sugar || 0;
         });
 
         // 4. Update UI Components
@@ -216,10 +220,114 @@ function updateMacroDisplays(totals, goals) {
     document.getElementById('fatsBar').style.width = fatsPercent + '%';
 
     // Fiber
-    document.getElementById('fiberCurrent').textContent = totals.fiber;
-    document.getElementById('fiberGoal').textContent = goals.fiber || 30;
-    const fiberPercent = Math.min((totals.fiber / (goals.fiber || 30)) * 100, 100);
-    document.getElementById('fiberBar').style.width = fiberPercent + '%';
+    if (document.getElementById('fiberCurrent')) {
+        document.getElementById('fiberCurrent').textContent = totals.fiber;
+        document.getElementById('fiberGoal').textContent = goals.fiber || 30;
+        const fiberPercent = Math.min((totals.fiber / (goals.fiber || 30)) * 100, 100);
+        document.getElementById('fiberBar').style.width = fiberPercent + '%';
+    }
+
+    // Sodium
+    const sodiumLimit = 2300;
+    if (document.getElementById('sodiumCurrent')) {
+        document.getElementById('sodiumCurrent').textContent = totals.sodium;
+        if (document.getElementById('sodiumLimit')) document.getElementById('sodiumLimit').textContent = sodiumLimit;
+        const sodiumPercent = Math.min((totals.sodium / sodiumLimit) * 100, 100);
+        const sodiumBar = document.getElementById('sodiumBar');
+        if (sodiumBar) {
+            sodiumBar.style.width = sodiumPercent + '%';
+            if (sodiumPercent > 90) sodiumBar.className = "h-full bg-red-500 w-[0%] transition-all duration-1000";
+            else if (sodiumPercent > 75) sodiumBar.className = "h-full bg-orange-500 w-[0%] transition-all duration-1000";
+            else sodiumBar.className = "h-full bg-blue-500 w-[0%] transition-all duration-1000";
+        }
+    }
+
+    // Sugar
+    const sugarLimit = 50;
+    if (document.getElementById('sugarCurrent')) {
+        document.getElementById('sugarCurrent').textContent = totals.sugar;
+        if (document.getElementById('sugarLimit')) document.getElementById('sugarLimit').textContent = sugarLimit;
+        const sugarPercent = Math.min((totals.sugar / sugarLimit) * 100, 100);
+        const sugarBar = document.getElementById('sugarBar');
+        if (sugarBar) {
+            sugarBar.style.width = sugarPercent + '%';
+            if (sugarPercent > 90) sugarBar.className = "h-full bg-red-500 w-[0%] transition-all duration-1000";
+            else if (sugarPercent > 75) sugarBar.className = "h-full bg-orange-500 w-[0%] transition-all duration-1000";
+            else sugarBar.className = "h-full bg-pink-500 w-[0%] transition-all duration-1000";
+        }
+    }
+
+    // Compute and display compliance score + mini trend
+    calculateAndDisplayCompliance(totals, goals, sodiumLimit, sugarLimit);
+}
+
+function calculateAndDisplayCompliance(totals, goals, sodiumLimit, sugarLimit) {
+    if (!document.getElementById('complianceScore')) return;
+
+    // Start at 100
+    let score = 100;
+
+    // Protein missing penalty (up to 20 pts)
+    const proteinDiff = goals.protein - totals.protein;
+    if (proteinDiff > 0) score -= (proteinDiff / goals.protein) * 20;
+
+    // Calorie overage penalty (up to 30 pts)
+    if (totals.calories > goals.calories) {
+        const over = totals.calories - goals.calories;
+        score -= Math.min((over / (goals.calories * 0.2)) * 30, 30);
+    }
+
+    // Sodium overage penalty
+    if (totals.sodium > sodiumLimit) score -= 15;
+
+    // Sugar overage penalty
+    if (totals.sugar > sugarLimit) score -= 15;
+
+    score = Math.max(0, Math.round(score));
+
+    const scoreEl = document.getElementById('complianceScore');
+    const ringEl = document.getElementById('complianceRing');
+
+    scoreEl.textContent = `${score}%`;
+
+    // Color grade
+    if (score >= 90) {
+        scoreEl.className = "text-5xl font-black text-green-500 transition-colors";
+        ringEl.className = "text-green-500 transition-all duration-1500";
+    } else if (score >= 70) {
+        scoreEl.className = "text-5xl font-black text-primary transition-colors";
+        ringEl.className = "text-primary transition-all duration-1500";
+    } else if (score >= 50) {
+        scoreEl.className = "text-5xl font-black text-orange-500 transition-colors";
+        ringEl.className = "text-orange-500 transition-all duration-1500";
+    } else {
+        scoreEl.className = "text-5xl font-black text-red-500 transition-colors";
+        ringEl.className = "text-red-500 transition-all duration-1500";
+    }
+
+    // Animate ring (stroke-dasharray="length, gap")
+    // Use setTimeout so the reflow is complete before animating
+    setTimeout(() => {
+        ringEl.style.strokeDasharray = `${score}, 100`;
+    }, 100);
+
+    renderMiniWeeklyTrend(score);
+}
+
+function renderMiniWeeklyTrend(todayScore) {
+    const trendContainer = document.getElementById('miniWeeklyTrend');
+    if (!trendContainer) return;
+
+    // Mock last 4 days + append today's actual score
+    const scores = [65, 92, 78, 88, todayScore];
+
+    trendContainer.innerHTML = scores.map(s => {
+        let colorClass = "bg-primary";
+        if (s < 70) colorClass = "bg-orange-500";
+        if (s < 50) colorClass = "bg-red-500";
+
+        return `<div class="w-full rounded ${colorClass} transition-all duration-1000 shadow-sm" style="height: ${s}%" title="Score: ${s}%"></div>`;
+    }).join('');
 }
 
 // Get protein tip based on remaining amount

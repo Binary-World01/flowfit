@@ -254,6 +254,43 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Sodium -->
+                        <div
+                            class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800/30">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">science</span>
+                                <span
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Sodium</span>
+                            </div>
+                            <div class="flex items-end justify-between">
+                                <p class="text-2xl font-bold" id="sodiumCurrent">0<span
+                                        class="text-sm text-gray-400">mg</span></p>
+                                <p class="text-xs text-gray-500 mb-1">/ <span id="sodiumLimit">2300</span>mg</p>
+                            </div>
+                            <div class="mt-2 h-2 bg-blue-100 dark:bg-blue-900/30 rounded-full overflow-hidden">
+                                <div id="sodiumBar" class="h-full bg-blue-500 w-[0%] transition-all duration-1000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sugar -->
+                        <div
+                            class="bg-pink-50 dark:bg-pink-900/20 rounded-xl p-4 border border-pink-100 dark:border-pink-800/30">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-pink-600 dark:text-pink-400">cake</span>
+                                <span
+                                    class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Sugar</span>
+                            </div>
+                            <div class="flex items-end justify-between">
+                                <p class="text-2xl font-bold" id="sugarCurrent">0<span
+                                        class="text-sm text-gray-400">g</span></p>
+                                <p class="text-xs text-gray-500 mb-1">/ <span id="sugarLimit">50</span>g</p>
+                            </div>
+                            <div class="mt-2 h-2 bg-pink-100 dark:bg-pink-900/30 rounded-full overflow-hidden">
+                                <div id="sugarBar" class="h-full bg-pink-500 w-[0%] transition-all duration-1000"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -289,6 +326,55 @@
 
             <!-- Right Column: Gamification & Stats -->
             <div class="lg:col-span-4 flex flex-col gap-6">
+
+                <!-- Compliance Score Card -->
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-white/5 relative overflow-hidden">
+                    <h3 class="text-lg font-bold mb-4">Diet Compliance</h3>
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-5xl font-black text-primary transition-colors"
+                                id="complianceScore">0%</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">Daily adherence</span>
+                        </div>
+                        <div class="size-20 relative">
+                            <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
+                                <path class="text-gray-100 dark:text-white/10" stroke-width="4" stroke="currentColor"
+                                    fill="none"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="complianceRing" class="text-primary transition-all duration-1500"
+                                    stroke-dasharray="0, 100" stroke-width="4" stroke="currentColor" fill="none"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Trend Sparkline -->
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-white/5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider">Weekly Trend</h3>
+                        <a href="insights.html" class="text-xs text-primary font-bold hover:underline">View details</a>
+                    </div>
+                    <div class="flex items-end justify-between h-20 gap-2" id="miniWeeklyTrend">
+                        <!-- Bars injected by JS -->
+                        <div class="w-full h-full bg-gray-50 dark:bg-white/5 rounded animate-pulse"></div>
+                        <div class="w-full h-3/4 bg-gray-50 dark:bg-white/5 rounded animate-pulse"></div>
+                        <div class="w-full h-1/2 bg-gray-50 dark:bg-white/5 rounded animate-pulse"></div>
+                        <div class="w-full h-5/6 bg-gray-50 dark:bg-white/5 rounded animate-pulse"></div>
+                        <div class="w-full h-1/3 bg-gray-50 dark:bg-white/5 rounded animate-pulse"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-[10px] text-gray-400 font-medium px-1 uppercase">
+                        <span>Mon</span>
+                        <span>Tue</span>
+                        <span>Wed</span>
+                        <span>Thu</span>
+                        <span>Fri</span>
+                    </div>
+                </div>
+
                 <!-- Streak Card (MOVED TO RIGHT) -->
                 <div class="bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-6 text-white shadow-lg">
                     <div class="flex items-center justify-between">
