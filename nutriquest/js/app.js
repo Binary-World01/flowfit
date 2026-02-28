@@ -69,7 +69,7 @@ document.addEventListener('click', (e) => {
     const menu = document.getElementById('navMenu');
     const menuBtn = document.querySelector('.icon-btn');
 
-    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+    if (menu && menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
         menu.classList.add('hidden');
     }
 });

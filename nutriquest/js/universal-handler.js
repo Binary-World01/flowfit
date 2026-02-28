@@ -162,7 +162,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 10. Ensure ALL buttons show pointer cursor
+    // 10. Hamburger Menu Logic
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const sideDrawer = document.getElementById('sideDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+
+    function toggleDrawer(show) {
+        if (!sideDrawer || !drawerBackdrop) return;
+        
+        if (show) {
+            sideDrawer.classList.remove('translate-x-full');
+            drawerBackdrop.classList.remove('hidden');
+            // Small delay to allow display block to apply before opacity fade
+            setTimeout(() => {
+                drawerBackdrop.classList.remove('opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        } else {
+            sideDrawer.classList.add('translate-x-full');
+            drawerBackdrop.classList.add('opacity-0');
+            setTimeout(() => {
+                drawerBackdrop.classList.add('hidden');
+            }, 300); // Matches transition duration
+            document.body.style.overflow = ''; 
+        }
+    }
+
+    if (menuBtn) {
+        menuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleDrawer(true);
+        });
+    }
+
+    if (closeDrawerBtn) {
+        closeDrawerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleDrawer(false);
+        });
+    }
+
+    if (drawerBackdrop) {
+        drawerBackdrop.addEventListener('click', () => toggleDrawer(false));
+    }
+
+    // 11. Ensure ALL buttons show pointer cursor
     document.querySelectorAll('button, a, [role="button"]').forEach(el => {
         if (!el.style.cursor) {
             el.style.cursor = 'pointer';

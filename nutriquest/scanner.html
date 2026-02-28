@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"
+        name="viewport" />
     <title>Scanner - NutriQuest</title>
 
     <!-- Dark Mode Script -->
@@ -98,20 +99,27 @@
                 href="achievements.html">Achievements</a>
             </nav>
         </div>
-        <div class="flex items-center gap-4">
+        </div>
+        <div class="flex items-center gap-3 sm:gap-4">
             <button
-                class="flex items-center gap-2 text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1.5 rounded-full">
+                class="hidden sm:flex items-center gap-2 text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary px-3 py-1.5 rounded-full">
                 <span class="material-symbols-outlined text-[18px]">local_fire_department</span>
                 <span>12 Day Streak</span>
             </button>
             <a href="profile.html"
                 class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/30"
                 style='background-image: url("https://avatar.iran.liara.run/public");'></a>
+
+            <!-- Hamburger Menu Button -->
+            <button id="mobileMenuBtn"
+                class="flex items-center justify-center p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-gray-700 dark:text-gray-300">
+                <span class="material-symbols-outlined text-[28px]">menu</span>
+            </button>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-[1200px] mx-auto px-6 lg:px-12 py-8">
+    <main class="max-w-[1200px] mx-auto px-6 lg:px-12 py-8 pb-24 md:pb-8">
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-4xl font-bold tracking-tight mb-2">Food Scanner 📸</h1>
@@ -266,6 +274,114 @@
             </div>
         </div>
     </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-light dark:border-white/10 dark:bg-surface-dark border-t border-gray-200 z-50 px-6 py-3 flex justify-between items-center pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.2)]">
+        <a href="dashboard.html"
+            class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[24px]">home</span>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a href="insights.html"
+            class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[24px]">bar_chart</span>
+            <span class="text-[10px] font-bold">Insights</span>
+        </a>
+        <a href="scanner.html"
+            class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-primary transition-colors">
+            <div
+                class="bg-primary text-white p-3 rounded-full -mt-8 shadow-lg shadow-primary/30 flex items-center justify-center border-4 border-surface-light dark:border-surface-dark">
+                <span class="material-symbols-outlined text-[28px]">photo_camera</span>
+            </div>
+            <span class="text-[10px] font-bold hidden">Scan</span>
+        </a>
+        <a href="community.html"
+            class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[24px]">groups</span>
+            <span class="text-[10px] font-bold">Community</span>
+        </a>
+        <a href="profile.html"
+            class="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[24px]">person</span>
+            <span class="text-[10px] font-bold">Profile</span>
+        </a>
+    </nav>
+
+    <!-- Side Drawer Menu -->
+    <div id="drawerBackdrop"
+        class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm"></div>
+    <div id="sideDrawer"
+        class="fixed top-0 right-0 h-full w-[80%] max-w-[320px] bg-surface-light dark:bg-surface-dark z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col border-l border-gray-200 dark:border-white/10">
+        <!-- Drawer Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="size-8 text-primary">
+                    <span class="material-symbols-outlined">eco</span>
+                </div>
+                <h2 class="text-xl font-bold">NutriQuest</h2>
+            </div>
+            <button id="closeDrawerBtn"
+                class="p-2 -mr-2 text-gray-500 hover:text-primary transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-white/5">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        <!-- Drawer Content (Scrollable) -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1">
+            <a href="dashboard.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">home</span>
+                Dashboard
+            </a>
+            <a href="insights.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">bar_chart</span>
+                Insights
+            </a>
+            <a href="scanner.html" class="flex items-center gap-4 p-3 rounded-xl text-primary bg-primary/10 font-bold">
+                <span class="material-symbols-outlined">photo_camera</span>
+                Food Scanner
+            </a>
+            <a href="log.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">edit_document</span>
+                Manual Log
+            </a>
+            <a href="coach.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">smart_toy</span>
+                AI Health Coach
+            </a>
+
+            <div class="my-2 border-t border-gray-100 dark:border-white/5"></div>
+
+            <a href="community.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">groups</span>
+                Community
+            </a>
+            <a href="achievements.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">emoji_events</span>
+                Achievements
+            </a>
+            <a href="profile.html"
+                class="flex items-center gap-4 p-3 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/5 font-medium transition-colors">
+                <span class="material-symbols-outlined text-gray-500">person</span>
+                Profile & Goals
+            </a>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-6 border-t border-gray-100 dark:border-white/5">
+            <button onclick="localStorage.clear(); window.location.href='welcome.html'"
+                class="w-full flex items-center justify-center gap-2 p-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 font-bold transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+                Log Out
+            </button>
+        </div>
+    </div>
 
     <!-- Firebase SDK (v9 compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
